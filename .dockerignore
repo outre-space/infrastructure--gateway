@@ -1,0 +1,8 @@
+node_modules
+.idea
+.env
+yarn.lock
+yarn-error.log
+package-lock.json
+docker-compose.yml
+test.js

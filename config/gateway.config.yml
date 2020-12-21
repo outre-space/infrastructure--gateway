@@ -1,0 +1,61 @@
+http:
+    port: 8080
+admin:
+    port: 9876
+    host: localhost
+apiEndpoints:
+    api:
+        host: localhost
+        paths: '/ip'
+    rainbow:
+        host: localhost
+        paths:
+            -   '/api/rainbow'
+            -   '/api/rainbow/*'
+serviceEndpoints:
+    httpbin:
+        url: 'https://httpbin.org'
+    rainbow:
+        url: 'http://localhost:8000'
+policies:
+    - rewrite
+    - basic-auth
+    - cors
+    - expression
+    - key-auth
+    - log
+    - oauth2
+    - proxy
+    - rate-limit
+pipelines:
+    default:
+        apiEndpoints:
+            - api
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            -   proxy:
+                    -   action:
+                            serviceEndpoint: httpbin
+                            changeOrigin: true
+
+    rainbow:
+        apiEndpoints:
+            - rainbow
+        policies:
+            -   log:
+                    -   action:
+                            message: ${req.method} ${req.originalUrl}
+            -   rewrite:
+                    -   condition:
+                            name: regexpmatch
+                            match: ^/api/([^/]+)(.*)$
+                        action:
+                            rewrite: /$2
+            -   log:
+                    -   action:
+                            message: ${req.originalUrl} ${req.url}
+            -   proxy:
+                    -   action:
+                            serviceEndpoint: rainbow
+                            changeOrigin: true

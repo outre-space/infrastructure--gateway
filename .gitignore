@@ -1,0 +1,8 @@
+node_modules
+.idea
+.env
+yarn.lock
+yarn-error.log
+/manifests
+pipingserver-kubeconfig.yaml
+package-lock.json
