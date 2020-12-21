@@ -43,9 +43,6 @@ pipelines:
         apiEndpoints:
             - rainbow
         policies:
-            -   log:
-                    -   action:
-                            message: ${req.method} ${req.originalUrl}
             -   rewrite:
                     -   condition:
                             name: regexpmatch
@@ -54,7 +51,12 @@ pipelines:
                             rewrite: /$2
             -   log:
                     -   action:
-                            message: ${req.originalUrl} ${req.url}
+                            message: ${req.hostname} ${req.ip || req.connection.remoteAddress} - [${new Date().toLocaleString()}] "${req.method} ${req.originalUrl} ~> ${req.url} HTTP/${req.httpVersion}" ${res.statusCode} "${req.headers['user-agent']}"
+            -   rate-limit:
+                    -   action:
+                            max: 10
+                            windowMs: 60000
+                            headers: true
             -   proxy:
                     -   action:
                             serviceEndpoint: rainbow
