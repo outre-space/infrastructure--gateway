@@ -47,30 +47,13 @@ policies:
     - proxy
     - rate-limit
 pipelines:
-    default:
+    carte:
         apiEndpoints:
-            - api
+            - carte
         policies:
-            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-            # - key-auth:
-            -   proxy:
-                    -   action:
-                            serviceEndpoint: httpbin
-                            changeOrigin: true
-
-    rainbow:
-        apiEndpoints:
-            - rainbow
-        policies:
-            -   rewrite:
-                    -   condition:
-                            name: regexpmatch
-                            match: ^/api/([^/]+)(.*)$
-                        action:
-                            rewrite: /$2
             -   log:
                     -   action:
-                            message: ${req.hostname} ${req.ip || req.connection.remoteAddress} - [${new Date().toLocaleString()}] "${req.method} ${req.originalUrl} ~> ${req.url} HTTP/${req.httpVersion}" ${res.statusCode} "${req.headers['user-agent']}"
+                            message: ${req.hostname} ${req.ip || req.connection.remoteAddress} - [${new Date().toLocaleString()}] "${req.method} ${req.url} HTTP/${req.httpVersion}" ${res.statusCode} "${req.headers['user-agent']}"
             -   rate-limit:
                     -   action:
                             max: 10
@@ -78,5 +61,56 @@ pipelines:
                             headers: true
             -   proxy:
                     -   action:
-                            serviceEndpoint: rainbow
+                            serviceEndpoint: carte
+                            changeOrigin: true
+
+    file:
+        apiEndpoints:
+            - file
+        policies:
+            -   log:
+                    -   action:
+                            message: ${req.hostname} ${req.ip || req.connection.remoteAddress} - [${new Date().toLocaleString()}] "${req.method} ${req.url} HTTP/${req.httpVersion}" ${res.statusCode} "${req.headers['user-agent']}"
+            -   rate-limit:
+                    -   action:
+                            max: 10
+                            windowMs: 60000
+                            headers: true
+            -   proxy:
+                    -   action:
+                            serviceEndpoint: file
+                            changeOrigin: true
+
+    account:
+        apiEndpoints:
+            - account
+        policies:
+            -   log:
+                    -   action:
+                            message: ${req.hostname} ${req.ip || req.connection.remoteAddress} - [${new Date().toLocaleString()}] "${req.method} ${req.url} HTTP/${req.httpVersion}" ${res.statusCode} "${req.headers['user-agent']}"
+            -   rate-limit:
+                    -   action:
+                            max: 10
+                            windowMs: 60000
+                            headers: true
+            -   proxy:
+                    -   action:
+                            serviceEndpoint: account
+                            changeOrigin: true
+
+    location:
+        apiEndpoints:
+            - location
+        policies:
+            -   log:
+                    -   action:
+                            message: ${req.hostname} ${req.ip || req.connection.remoteAddress} - [${new Date().toLocaleString()}] "${req.method} ${req.url} HTTP/${req.httpVersion}" ${res.statusCode} "${req.headers['user-agent']}"
+            -   rate-limit:
+                    -   action:
+                            max: 10
+                            windowMs: 60000
+                            headers: true
+            -   proxy:
+                    -   action:
+                            serviceEndpoint: location
                             changeOrigin: true
