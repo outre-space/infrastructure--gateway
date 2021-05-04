@@ -4,19 +4,38 @@ admin:
     port: 9876
     host: localhost
 apiEndpoints:
-    api:
-        host: localhost
-        paths: '/ip'
-    rainbow:
-        host: localhost
+    carte:
         paths:
-            -   '/api/rainbow'
-            -   '/api/rainbow/*'
+            -   '/api/customer'
+            -   '/api/customer/*'
+            -   '/api/restaurant'
+            -   '/api/restaurant/*'
+            -   '/api/courier'
+            -   '/api/courier/*'
+    file:
+        paths:
+            -   '/api/file'
+            -   '/api/file/*'
+            -   '/api/bucket'
+            -   '/api/bucket/*'
+    location:
+        paths:
+            -   '/api/location'
+    account:
+        paths:
+            -   '/api/user'
+            -   '/api/user/*'
+            -   '/api/auth'
+            -   '/api/auth/*'
 serviceEndpoints:
-    httpbin:
-        url: 'https://httpbin.org'
-    rainbow:
-        url: 'http://localhost:8000'
+    carte:
+        url: 'http://18.218.61.61:8085'
+    account:
+        url: 'http://18.218.61.61:8080'
+    location:
+        url: 'http://18.218.61.61:8083'
+    file:
+        url: 'http://18.218.61.61:8084'
 policies:
     - rewrite
     - basic-auth
