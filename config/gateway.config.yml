@@ -21,6 +21,7 @@ apiEndpoints:
     location:
         paths:
             -   '/api/location'
+            -   '/api/location/*'
     account:
         paths:
             -   '/api/user'
