@@ -1,8 +1,5 @@
 http:
-    port: 80
-admin:
-    port: 9876
-    host: localhost
+    port: ${PORT}
 apiEndpoints:
     carte:
         paths:
